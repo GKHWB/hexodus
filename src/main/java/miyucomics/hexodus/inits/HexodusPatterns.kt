@@ -16,9 +16,8 @@ object HexodusPatterns {
 	@JvmStatic
 	fun init() {
 		register("change_gravity", "wawawqaqwa", HexDir.NORTH_EAST, OpChangeGravity())
-		register("get_duration", "wdwdwedewdwaaw", HexDir.NORTH_WEST, OpGetGravity { it.duration.asActionResult })
-		register("get_direction", "wdwdwedewqq", HexDir.NORTH_WEST, OpGetGravity { if (it.duration > 0) it.direction.unitVector.asActionResult else null.asActionResult })
-		register("get_strength", "wdwdwedewdw", HexDir.NORTH_WEST, OpGetGravity { if (it.duration > 0) it.strength.asActionResult else null.asActionResult })
+		register("get_direction", "wdwdwedewqq", HexDir.NORTH_WEST, OpGetGravity { it.direction.unitVector.asActionResult })
+		register("get_strength", "wdwdwedewdw", HexDir.NORTH_WEST, OpGetGravity { it.strength.asActionResult })
 		register("get_true_direction", "weeeewedewqq", HexDir.NORTH_WEST, OpGetTrueGravity { it.currGravityDirection.unitVector.asActionResult })
 		register("get_true_strength", "weeeewedewdw", HexDir.NORTH_WEST, OpGetTrueGravity { it.currGravityStrength.asActionResult })
 	}

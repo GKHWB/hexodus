@@ -15,7 +15,7 @@ import kotlin.jvm.java
 
 class HexodusComponents : EntityComponentInitializer {
 	override fun registerEntityComponentFactories(registry: EntityComponentFactoryRegistry) {
-		registry.registerFor(Entity::class.java, HEXODUS) { HexodusComponent(Direction.DOWN, 1.0, 0) }
+		registry.registerFor(Entity::class.java, HEXODUS) { HexodusComponent(Direction.DOWN, 1.0) }
 	}
 
 	companion object {
@@ -23,19 +23,16 @@ class HexodusComponents : EntityComponentInitializer {
 	}
 }
 
-class HexodusComponent(var direction: Direction, var strength: Double, var duration: Int) : ComponentV3, AutoSyncedComponent, CommonTickingComponent {
-	fun setAlteredGravity(entity: Entity, newDirection: Direction, newStrength: Double, newDuration: Int) {
+class HexodusComponent(var direction: Direction, var strength: Double) : ComponentV3, AutoSyncedComponent, CommonTickingComponent {
+	fun setAlteredGravity(entity: Entity, newDirection: Direction, newStrength: Double) {
 		direction = newDirection
-		duration = newDuration
 		strength = newStrength
 		HexodusComponents.HEXODUS.sync(entity)
 	}
 
 	fun alterGravity(component: GravityComponent) {
-		if (duration > 0) {
-			component.applyGravityDirectionEffect(direction, null, 200.0)
-			component.applyGravityStrengthEffect(strength)
-		}
+		component.applyGravityDirectionEffect(direction, null, 200.0)
+		component.applyGravityStrengthEffect(strength)
 	}
 
 	override fun writeToNbt(compound: NbtCompound) {
@@ -43,22 +40,13 @@ class HexodusComponent(var direction: Direction, var strength: Double, var durat
 		compound.putInt("y", direction.offsetY)
 		compound.putInt("z", direction.offsetZ)
 		compound.putDouble("strength", strength)
-		compound.putInt("duration", duration)
 	}
 
 	override fun readFromNbt(compound: NbtCompound) {
 		direction = Direction.fromVector(compound.getInt("x"), compound.getInt("y"), compound.getInt("z")) ?: Direction.DOWN
 		strength = compound.getDouble("strength")
-		duration = compound.getInt("duration")
 	}
 
 	override fun tick() {
-		if (duration > 0) {
-			duration -= 1
-			if (duration == 0) {
-				direction = Direction.DOWN
-				strength = 1.0
-			}
-		}
 	}
 }

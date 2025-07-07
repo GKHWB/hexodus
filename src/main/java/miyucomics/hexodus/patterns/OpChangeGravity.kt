@@ -27,7 +27,7 @@ class OpChangeGravity : SpellAction {
 
 	private data class Spell(val target: Entity, val direction: Direction, val strength: Double) : RenderedSpell {
 		override fun cast(env: CastingEnvironment) {
-			HexodusComponents.HEXODUS.get(target).setAlteredGravity(target, direction, strength, 50)
+			HexodusComponents.HEXODUS.get(target).setAlteredGravity(target, direction, strength)
 		}
 	}
 }
